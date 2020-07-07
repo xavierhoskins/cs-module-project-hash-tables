@@ -24,6 +24,8 @@ class HashTable:
         self.capacity = capacity
         self.size = 0
         self.positions = [None] * self.capacity
+        self.__fnv_offset_basis = 14695981039346656037
+        self.__fnv_prime = 1099511628211
 
     def get_num_slots(self):
         """
@@ -51,13 +53,13 @@ class HashTable:
         """
 
         # Your code here
-        hval = 0x811c9dc5
-        fnvprime = 0x01000193
-        fnvsize = 2**64
-        for s in key:
-            hval = hval ^ ord(s)
-            hval = (hval * fnvprime) % fnvsize
-        return hval
+        # ord is built in and shows the unicode for the provided string
+        hsh = self.__fnv_offset_basis
+        key_bytes = [ord(char) for char in key]
+        for byte in key_bytes:
+            hsh *= self.__fnv_prime
+            hsh ^= byte
+        return hsh
 
 
     def djb2(self, key):
@@ -98,7 +100,7 @@ class HashTable:
         # Your code here
         index = self.hash_index(key)
         if self.positions[index] is None:
-            print("Warning: Key not found")
+            print("Key not found")
         else:
             self.positions[index] = None
 
@@ -159,3 +161,6 @@ if __name__ == "__main__":
         print(ht.get(f"line_{i}"))
 
     print("")
+
+
+
