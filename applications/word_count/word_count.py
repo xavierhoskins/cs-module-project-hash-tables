@@ -1,7 +1,18 @@
 def word_count(s):
     # Your code here
 
+    word_counter = {}
 
+    for w in s:
+        w = w.lower()
+        if w in word_counter:
+            # for each consecutive letter add + 1
+            word_counter[w] += 1
+        else:
+            #if letter appears once set it to 1
+            word_counter[w] = 1
+
+    return word_counter
 
 if __name__ == "__main__":
     print(word_count(""))
